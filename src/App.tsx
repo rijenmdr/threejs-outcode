@@ -17,7 +17,7 @@ function App() {
 
   return (
     <div className="container">
-      <Canvas camera={{ position: [0, 2, 5], fov: 50 }} style={{ touchAction: 'none' }}>
+      <Canvas camera={{ position: [0, 2, 5], fov: 100 }} style={{ touchAction: 'none' }}>
         <ambientLight intensity={0.5} />
         <directionalLight position={[2, 2, 2]} intensity={1} />
         <Model url={'src/assets/cube.glb'} />
