@@ -1,30 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useRef } from 'react'
+import { Canvas } from '@react-three/fiber'
+import { OrbitControls } from '@react-three/drei'
+import { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
+import Model from './components/Model'
+
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const controlsRef = useRef<OrbitControlsImpl>(null)
+
+  const resetView = () => {
+    if (controlsRef.current) {
+      controlsRef.current.reset()
+    }
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-    </>
+    <div className="container">
+      <Canvas camera={{ position: [0, 2, 5], fov: 50 }} style={{ touchAction: 'none' }}>
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[2, 2, 2]} intensity={1} />
+        <Model url={'src/assets/cube.glb'} />
+        <OrbitControls
+          ref={controlsRef}
+          enableZoom={true}
+          enablePan={false}
+          minDistance={1.5}
+          maxDistance={8}
+          enableDamping={true}
+          dampingFactor={0.05}
+          rotateSpeed={0.5}
+          minPolarAngle={Math.PI / 4}
+          maxPolarAngle={Math.PI / 1.5}
+        />
+      </Canvas>
+      <button onClick={resetView} className="btn">
+        Reset View
+      </button>
+    </div>
   )
 }
 
