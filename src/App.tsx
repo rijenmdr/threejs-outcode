@@ -7,8 +7,10 @@ import Model from './components/Model'
 import './App.css'
 
 function App() {
+  // Create a reference to access OrbitControls instance
   const controlsRef = useRef<OrbitControlsImpl>(null)
 
+  // Function to reset camera view to initial position
   const resetView = () => {
     if (controlsRef.current) {
       controlsRef.current.reset()
@@ -17,10 +19,15 @@ function App() {
 
   return (
     <div className="container">
+      {/* Canvas component to render 3D scene */}
       <Canvas camera={{ position: [0, 2, 5], fov: 100 }} style={{ touchAction: 'none' }}>
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[2, 2, 2]} intensity={1} />
+        {/* Scene lighting setup */}
+        <ambientLight intensity={0.5} /> {/* Soft overall lighting */}
+        <directionalLight position={[2, 2, 2]} intensity={1} />{' '}
+        {/* Directional light for shadows */}
+        {/* 3D Model component with path to GLB file */}
         <Model url={'src/assets/cube.glb'} />
+        {/* Camera controls configuration */}
         <OrbitControls
           ref={controlsRef}
           enableZoom={true}
@@ -34,6 +41,8 @@ function App() {
           maxPolarAngle={Math.PI / 1.5}
         />
       </Canvas>
+
+      {/* Reset button to return camera to initial position */}
       <button onClick={resetView} className="btn">
         Reset View
       </button>
